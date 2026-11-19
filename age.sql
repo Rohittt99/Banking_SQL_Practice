@@ -1,5 +1,6 @@
 use bank;
 select * from accounts;
+select * from branches;
 select Account_type,sum(balance) as total 
 from accounts
 group by Account_Type
@@ -57,3 +58,48 @@ from accounts;
 Select Account_Type,Balance,row_number()
 over(partition by Account_Type order by Balance) as R_NO
 from accounts;
+
+-- Joins
+
+select customers.first_name,accounts.Balance
+from customers Inner Join accounts
+on customers.customer_id = accounts.customer_id;
+
+select c.first_name,a.Balance
+from customers c inner join accounts a
+on c.customer_id=a.customer_id;
+
+select customers.customer_id,accounts.Balance
+from customers left Join accounts
+on customers.customer_id = accounts.customer_id
+where Balance is null ;
+
+
+-- customer frist name 
+-- branch name 
+-- account type 
+-- balance
+
+
+SELECT c.first_name,b.branch_name,a.Account_Type,a.Balance
+FROM customers c 
+LEFT JOIN branches b 
+	ON c.first_name = b.branch_name
+LEFT JOIN accounts a 
+	ON a.account_type = a.account_type;
+    
+
+-- Sub Queries
+
+select * from customers
+where age > (select avg(age) from customers);
+
+select avg(age) from customers;
+
+select * from customers
+where age in (select age from customers where customer_id in (17,20));
+
+create view oc as
+select * from customers where age>35;
+
+
